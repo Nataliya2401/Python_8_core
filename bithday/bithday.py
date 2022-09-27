@@ -39,10 +39,7 @@ def check_date_users_bithday(user, day_of_list):
     day_birth_dt = user['birthday'].day  # number bithday
     month_birth_m = user['birthday'].month  # month bithday
     # day_of_list - date object from days next week for check
-    if (day_birth_dt == day_of_list.day) and (month_birth_m == day_of_list.month):
-        return True
-    else:
-        return False
+    return ((day_birth_dt == day_of_list.day) and (month_birth_m == day_of_list.month))
 
 
 def check_data(users):
@@ -51,7 +48,7 @@ def check_data(users):
 
     for day in list_date_week:
         number_day_of_week = day.weekday()  # 0-monday...
-        if (number_day_of_week == 6) or (number_day_of_week == 5):
+        if number_day_of_week in (5, 6):
             number_day_of_week = 0
 
         for item in users:
@@ -60,8 +57,6 @@ def check_data(users):
 
 
 def get_birthdays_per_week(users):
-
-    make_list_day_of_week()
 
     check_data(users)
 
