@@ -12,7 +12,7 @@ class Field:
         self.value = value
 
     def __str_(self):
-        return f'{self.value}'
+        return self.value
 
 
 class Phone(Field):
@@ -34,15 +34,19 @@ class Record:
     def add_phone(self, phone):
         self.phones.append(Phone(phone))
 
-    def delete_phone(self, phone):
-        for item in self.phones:
-            if item.value == phone:
-                self.phones.remove(item)
+    def delete_phone(self, del_phone):
+        for phone in self.phones:
+            if phone.value == del_phone:
+                self.phones.remove(phone)
 
     def edit_phone(self, old_phone, new_phone):
-        for item in self.phones:
-            if item.value == old_phone:
-                item.value = new_phone
+        for phone in self.phones:
+            if phone.value == old_phone:
+                phone.value = new_phone
+#                edit_done=True
+                return True
+        print(f'Phone {old_phone} not found in data')
+        return False
 
     def __str__(self):
         return f'NameContact {self.name.value} - tel:  {"; ".join([phone.value for phone in self.phones])}'
@@ -109,18 +113,16 @@ def change_contact(user_data):
     name_contact = list_contact[0]
     phone_contact_old = list_contact[1]
     phone_contact_new = list_contact[2]
-    # print(name_contact)
-    # print(name_contact.value)
-    # print(CONTACTS.data)
+    old_data_contact = CONTACTS.data[name_contact]
 
-    if name_contact in CONTACTS.data:
+#    if name_contact in CONTACTS.data: (спрацьовує декоратор і видає Wrong Name, якщо немає серед контактів на попередньому операторі)
 
-        CONTACTS.data[name_contact].edit_phone(
-            phone_contact_old, phone_contact_new)
-    else:
-        return f'Contact {name_contact} not in phone book'
+    if old_data_contact.edit_phone(phone_contact_old, phone_contact_new):
+        return f'For {name_contact} has changed phone number at: {phone_contact_new}'
 
-    return f'For {name_contact} has changed phone number at: {phone_contact_new}'
+    return f' {name_contact} has not phone number {phone_contact_old} in contact'
+
+#    return f'Contact {name_contact} not in phone book'
 
 
 @input_error
